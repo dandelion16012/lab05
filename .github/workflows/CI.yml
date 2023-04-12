@@ -2,32 +2,34 @@ name: bank
 
 on:
   push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+    branches: master
+
   workflow_dispatch:
       
 jobs:
-  build:
+
+  BuildProject:
       runs-on: ubuntu-latest
       steps:
- - uses: actions/checkout@v3
+        - uses: actions/checkout@v2
 
- - name: build banking
-          working-directory: banking
+        - name: build banking
+          shell: bash
           run: |
-            cmake -S. -B_built
+            cd banking
+            cmake -H. -B_built
             cmake --build _built
-  test:
+          
+  Testing:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
       
       - name: update
         run:  |
           git submodule update --init
           sudo apt install lcov
-          sudo apt install g++-9
+          sudo apt install g++-7
       
       - name: test
         shell: bash
@@ -38,7 +40,7 @@ jobs:
           ./RunTest
           lcov -t "banking" -o lcov.info -c -d .
           
-      - name: coveralls parallel
+      - name: CovBeg
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.github_token }}
@@ -46,7 +48,7 @@ jobs:
           path-to-lcov: ./_built/lcov.info
           coveralls-endpoint: https://coveralls.io
 
-      - name: coveralls finished
+      - name: CovFin
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.github_token }}
