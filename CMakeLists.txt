@@ -6,7 +6,7 @@ SET(CMAKE_CXX_COMPILER "/usr/bin/g++")
 
 project(TestRunning)
 
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/gtest" "gtest")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lab05" "gtest")
 
 #add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/gtest/gmock gmock)
 
